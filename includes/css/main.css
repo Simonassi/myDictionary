@@ -1,0 +1,25 @@
+body {
+	background: #f3f3f3;
+}
+
+.title{
+	background: #3c3939;
+    color: white;
+}
+
+tbody tr:nth-child(odd) {
+   background-color: #ececec;
+}
+
+
+a {
+	text-decoration: none;
+}
+
+a:link { color: white; text-decoration: none; }
+
+a:visited { color: white; }
+
+a:hover { color: white; }
+
+a: active { color: white; }
