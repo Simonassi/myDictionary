@@ -7,15 +7,18 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
   	$scope.sortReverse  = false;  // set the default sort order
   	$scope.searchFish   = '';     // set the default search/filter term
 
+  	$scope.limitSize  = 10;
+  	$scope.limitBegin =  0;
+
 	$http.get('read_words.php').success(function(data) {
         $scope.words = data.records;
+        //$scope.numberPages = Math.ceil($scope.words.length/$scope.limitSize);
     });
+    
 
 	$scope.save = function() {
 		$scope.errors = [];
 		error = false;
-
-		var dictionary_id = document.getElementById('dictionary_id').value;
 
 		if($scope.text == '' || $scope.text == null){
 			error = "Insert a word.";
@@ -28,17 +31,22 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
 			return;
 		}
 
-        $http.post('save_word.php', {'text': $scope.text, 'description': $scope.description, 'dictionary_id': dictionary_id, 'language_id': 1}
+        $http.post('save_word.php', {'text': $scope.text, 'description': $scope.description, 'language_id': 1}
         ).success(function(data, status, headers, config) {
             if (data.msg != ''){
                 $scope.words.push(data);
                 $scope.text = '';
                 $scope.description = '';
+                $('#input_new_word').focus();
             }else{
                 $scope.errors.push(data.error);
             }
         }).error(function(data, status) {
             $scope.errors.push(status);
         });
+    }
+
+    $scope.page = function(page_number){
+    	$scope.limitBegin = (page_number-1)*$scope.limitSize;
     }
 }]);

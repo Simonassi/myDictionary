@@ -29,6 +29,7 @@ if (isset($_POST['submit'])) {
         
     if($user = mysqli_fetch_assoc($user)){
         $_SESSION["user_id"] = $user["id"];
+        $_SESSION["dictionary_id"] = 1;
         redirect_to("main.php");
     }else{
         $_SESSION["error"] = $error_message;

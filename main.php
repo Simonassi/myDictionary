@@ -12,25 +12,24 @@
   	<meta name="author" content="Rafael Simonassi">
 
   	<link rel="stylesheet" type="text/css" href="https://necolas.github.io/normalize.css/4.1.1/normalize.css">
-  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<link rel="stylesheet" href="includes/css/main.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="includes/css/main.css">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
   	
 </head>
 
 <body>
 
-	<div class="container" ng-controller = "wordsControler as wDictionary">
+	<div class="container" id="wordsControler" ng-controller = "wordsControler as wDictionary">
 		<?php require_once('includes/nav_bar.php'); ?>
 		<div class="row">
   			  		
   			<div class="col-md-3 ">
-  					<input type="text" class="form-control" placeholder="New word" ng-model="text" >
+  					<input type="text" class="form-control input_word" id="input_new_word" placeholder="New word" ng-model="text" >
 			</div>
   			<div class="col-md-8 col-md-offset-1">
   				<div class="input-group">
-  					<input type="hidden" name="dictionary_id" id="dictionary_id" value="1">
-	  				<input type="text" class="form-control" placeholder="Description" ng-model="description">
+	  				<input type="text" class="form-control input_word" id="input_new_description" placeholder="Description" ng-model="description">
 	      			<span class="input-group-btn">
 	        			<button class="btn btn-default" type="button" ng-click="save()">Save Word</button>
 	      			</span>
@@ -40,7 +39,11 @@
   		<br>
   		<div class="row">
   			<div class="col-md-12">
-  				<div class="alert alert-danger" role="alert" ng-repeat="error in errors">{{ error }}</div>
+  				<div class="alert alert-danger" role="alert" ng-repeat="error in errors">
+  					<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>
+  					<span class='sr-only'>Error:</span>
+  					{{ error }}
+  				</div>
   				<div class="panel panel-default">
   					
 	  				<table class="table"> 
@@ -56,19 +59,40 @@
 	  								<span ng-show="sortType == 'description' && !sortReverse" class="fa fa-caret-down"></span>
         							<span ng-show="sortType == 'description' && sortReverse"  class="fa fa-caret-up"></span>
 	  							</th> 
+	  							<th></th>
+	  							<th></th>
 	  						</tr> 
 	  					</thead> 
 
 	  					<tbody> 
-	  						<tr ng-repeat="w in words | orderBy:sortType:sortReverse | filter:searchWord">
+	  						<tr ng-repeat="w in words | orderBy:sortType:sortReverse | filter:searchWord |  limitTo: limitSize : limitBegin">
 	  							<td>{{w.text}}</td> 
-	  							<td>{{w.description}}</td> 
+	  							<td>{{w.description}}</td>
+	  							<td><span class="glyphicon glyphicon-pencil" id="edit_{{w.id}}" aria-hidden="true"></span></td> 
+	  							<td><span class="glyphicon glyphicon-remove" id="del_{{w.id}}" aria-hidden="true"></span></td> 
 	  						</tr> 
 	  					</tbody> 
 	  				</table>
+	  				<nav>
+					  <ul class="pagination">
+					    <li>
+					      <a href="#" aria-label="Previous">
+					        <span aria-hidden="true">&laquo;</span>
+					      </a>
+					    </li>
+					    <?php for($i = 1; $i < 10; $i++){ 
+					    	echo "<li ><a href='#' ng-click='page($i)'>$i</a></li>";
+					    } ?>
+					    <li>
+					      <a href="#" aria-label="Next">
+					        <span aria-hidden="true">&raquo;</span>
+					      </a>
+					    </li>
+					  </ul>
+					</nav>
+    				</div>
 	  			</div>
   			</div>
-
   		</div>
 	</div>
 	<span>
@@ -87,3 +111,16 @@ if (isset($connection)) {
   mysqli_close($connection);
 }
 ?>
+
+<script>
+/*
+$( document ).ready(function() {
+  
+});	
+*/
+$('.input_word').keypress(function (e) {
+	if (e.which == 13) {
+		angular.element(document.getElementById('wordsControler')).scope().save();
+	}
+});
+</script>

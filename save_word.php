@@ -4,9 +4,10 @@
 <?php confirm_logged_in(); ?>
 <?php
 $data = json_decode(file_get_contents("php://input"));
-$dictionary_id = $data->dictionary_id;
+
+$dictionary_id = $_SESSION['dictionary_id'];
 $language_id   = $data->language_id;
-$text          = $data->text ;
+$text          = $data->text;
 $description   = $data->description;
 
 $id = saveWord($dictionary_id, $language_id, $text, $description);

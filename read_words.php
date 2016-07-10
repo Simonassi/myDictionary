@@ -3,15 +3,17 @@
 <?php require_once("includes/functions.php"); ?>
 <?php confirm_logged_in(); ?>
 <?php 
-$words_set = readAllWords(1,1);
-  
+
+$page = isset($_GET['page']) ? $_GET['page'] : 1;
+$words_set = readAllWords(1,1, $page);
+
 $data="";
-     
+
 while($word =  mysqli_fetch_assoc($words_set)){
       
     $data .= '{';
         $data .= '"id":"'  . $word['id'] . '",';
-        $data .= '"text":"' . $word['text'] . '",';
+        $data .= '"text":"' . decode_string($word['text']) . '",';
         $data .= '"description":"' . decode_string($word['description']) . '",';
         $data .= '"language":"' . $word['language'] . '"';
     $data .= '}'; 

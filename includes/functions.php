@@ -13,6 +13,7 @@
 		global $connection;
 		
 		$escaped_string = mysqli_real_escape_string($connection, $string);
+        $escaped_string = utf8_encode($escaped_string);
 		return $escaped_string;
 	}
 	
@@ -23,27 +24,29 @@
 	}
 	
     function decode_string($str){
-        return html_entity_decode($str);
+        return html_entity_decode(utf8_decode($str));
     }
 
-    function encode_string($str){
-        return htmlentities($str);
-    }
-
-    function readAllWords($dictionary_id, $user_id){
+    function readAllWords($dictionary_id, $user_id, $page){
  
         global $connection;
         
         $dictionary_id = (int) $dictionary_id;
         $user_id       = (int) $user_id;
+        $page          = (int) $page;
+
+        $row_count = 10;
+        $offset = ($page - 1)*$row_count;
         
+
         $query  = "SELECT w.id, w.text, w.description, l.language ";
         $query .= "FROM words w ";
         $query .= "JOIN languages l ON l.id = w.language_id ";
         $query .= "JOIN dictionary d ON d.id = w.dictionary_id ";
         $query .= "WHERE d.id = {$dictionary_id} ";
         $query .= "AND d.user_id = {$user_id} ";
-        $query .= "ORDER BY w.text ASC";
+        $query .= "ORDER BY w.text ASC ";
+        //$query .= "LIMIT {$offset}, {$row_count}";
         
         $words_set = mysqli_query($connection, $query);
         confirm_query($words_set);
