@@ -1,6 +1,4 @@
-<?php require_once("includes/session.php"); ?>
-<?php require_once("includes/db_connection.php"); ?>
-<?php require_once("includes/functions.php"); ?>
+<?php require_once("../includes/init.php");?>
 <?php confirm_logged_in(); ?>
 <!doctype html>
 <html lang="en" ng-app="dictionary">
@@ -13,15 +11,14 @@
 
   	<link rel="stylesheet" type="text/css" href="https://necolas.github.io/normalize.css/4.1.1/normalize.css">
   	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="includes/css/main.css">
+	<link rel="stylesheet" type="text/css" href="../includes/css/main.css">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
   	
 </head>
 
 <body>
-
 	<div class="container" id="wordsControler" ng-controller = "wordsControler as wDictionary">
-		<?php require_once('includes/nav_bar.php'); ?>
+		<?php require_once('../includes/nav_bar.php'); ?>
 		<div class="row">
   			  		
   			<div class="col-md-3 ">
@@ -98,8 +95,8 @@
 	<span>
 </span>
 
-	<script src="includes/js/angular.min.js"></script>
-  	<script src="includes/js/app.js"></script>
+	<script src="../includes/js/angular.min.js"></script>
+  	<script src="../includes/js/app.js"></script>
   	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
@@ -113,11 +110,6 @@ if (isset($connection)) {
 ?>
 
 <script>
-/*
-$( document ).ready(function() {
-  
-});	
-*/
 $('.input_word').keypress(function (e) {
 	if (e.which == 13) {
 		angular.element(document.getElementById('wordsControler')).scope().save();

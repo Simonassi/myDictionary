@@ -1,6 +1,4 @@
-<?php require_once("includes/session.php"); ?>
-<?php require_once("includes/db_connection.php"); ?>
-<?php require_once("includes/functions.php"); ?>
+<?php require_once("../includes/init.php"); ?>
 <?php confirm_logged_in(); ?>
 <?php
 $data = json_decode(file_get_contents("php://input"));
@@ -20,4 +18,4 @@ if($id > 0){
 $jsn = json_encode($arr);
 print_r($jsn);
 ?>
-<?php require_once("includes/close_db.php"); ?>
+<?php require_once("../includes/close_db.php"); ?>

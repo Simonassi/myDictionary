@@ -14,7 +14,8 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         $scope.words = data.records;
         //$scope.numberPages = Math.ceil($scope.words.length/$scope.limitSize);
     });
-    
+
+    //getCookie('xUt');
 
 	$scope.save = function() {
 		$scope.errors = [];
@@ -50,3 +51,18 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
     	$scope.limitBegin = (page_number-1)*$scope.limitSize;
     }
 }]);
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length,c.length);
+        }
+    }
+    return "";
+}

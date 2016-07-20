@@ -1,6 +1,4 @@
-<?php require_once("includes/session.php"); ?>
-<?php require_once("includes/db_connection.php"); ?>
-<?php require_once("includes/functions.php"); ?>
+<?php require_once("../includes/init.php"); ?>
 <?php confirm_logged_in(); ?>
 <?php 
 
@@ -26,4 +24,4 @@ $data = substr($data,0,-1);
 // json format output 
 echo '{"records":[' . $data . ']}'; 
 ?>
-<?php require_once("includes/close_db.php"); ?>
+<?php require_once("../includes/close_db.php"); ?>
