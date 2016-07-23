@@ -3,7 +3,7 @@
 <?php 
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
-$words_set = readAllWords(1,1, $page);
+$words_set = readAllWords($_SESSION["dictionary_id"],$_SESSION["user_id"], $page);
 
 $data="";
 

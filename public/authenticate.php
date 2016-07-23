@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
         
     if($user){
         $_SESSION["user_id"] = $user["id"];
-        $_SESSION["dictionary_id"] = 1;
+        $_SESSION["dictionary_id"] = 1; // TODO
 
         $token = save_token($_SESSION["user_id"]);
 

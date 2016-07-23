@@ -15,8 +15,6 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         //$scope.numberPages = Math.ceil($scope.words.length/$scope.limitSize);
     });
 
-    //getCookie('xUt');
-
 	$scope.save = function() {
 		$scope.errors = [];
 		error = false;
@@ -47,22 +45,25 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         });
     }
 
+    $scope.delete = function(word_id) {
+        $scope.errors = [];
+        error = false;
+        var r = confirm('Are you sure you want to delete this word?');
+        if(r == true){
+            $http.post('delete_word.php', {'word_id': word_id}
+            ).success(function(data, status, headers, config) {
+                if (data.msg != ''){
+                    $('#del_'+word_id).parent('td').parent('tr').remove();
+                }else{
+                    $scope.errors.push(data.error);
+                }
+            }).error(function(data, status) {
+                $scope.errors.push(status);
+            });
+        }
+    }
+
     $scope.page = function(page_number){
     	$scope.limitBegin = (page_number-1)*$scope.limitSize;
     }
 }]);
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length,c.length);
-        }
-    }
-    return "";
-}

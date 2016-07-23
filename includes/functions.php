@@ -32,13 +32,14 @@
  
         global $connection;
         
+        if(!validateDictionary()){ return false; }
+
         $dictionary_id = (int) $dictionary_id;
         $user_id       = (int) $user_id;
         $page          = (int) $page;
 
         $row_count = 10;
         $offset = ($page - 1)*$row_count;
-        
 
         $query  = "SELECT w.id, w.text, w.description, l.language ";
         $query .= "FROM words w ";
@@ -55,14 +56,33 @@
         return $words_set;
     }
 	
+    function validateDictionary(){
+        global $connection;
+
+        $dictionary_id = (int) $_SESSION['dictionary_id'];
+        $token         = mysql_prep($_COOKIE['xUt']);
+
+        $query  = "SELECT * ";
+        $query .= "FROM users u ";
+        $query .= "JOIN dictionary d ON d.user_id = u.id ";
+        $query .= "WHERE d.id = '{$dictionary_id}' ";
+        $query .= "AND u.token = '{$token}' ";
+
+        $result = mysqli_query($connection, $query);
+
+        return mysqli_num_rows($result);
+    }
+
     function saveWord($dictionary_id, $language_id, $text, $description){
         global $connection;
 		
+        if(!validateDictionary()){ return false; }
+
         $dictionary_id = (int) $dictionary_id;
         $language_id   = (int) $language_id;
         $text          = mysql_prep($text);
         $description   = mysql_prep($description);
-        
+
 		$query  = "INSERT INTO words ";
 		$query .= "(dictionary_id, language_id, text, description) ";
 		$query .= "VALUES ";
@@ -72,6 +92,24 @@
         $id = mysqli_insert_id($connection);
         
         return $id;
+    }
+
+    function deleteWord($word_id, $dictionary_id){
+        global $connection;
+        
+        if(!validateDictionary()){ return false; }
+
+        $word_id       = (int) $word_id;
+        $dictionary_id = (int) $dictionary_id;
+
+        $query  = "DELETE FROM words ";
+        $query .= "WHERE ";
+        $query .= "id = '{$word_id}' AND ";
+        $query .= "dictionary_id = '{$dictionary_id}'";
+
+        mysqli_query($connection, $query);
+
+        return mysqli_affected_rows($connection);
     }
 
 	function logged_in() {

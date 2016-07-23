@@ -66,7 +66,7 @@
 	  							<td>{{w.text}}</td> 
 	  							<td>{{w.description}}</td>
 	  							<td><span class="glyphicon glyphicon-pencil" id="edit_{{w.id}}" aria-hidden="true"></span></td> 
-	  							<td><span class="glyphicon glyphicon-remove" id="del_{{w.id}}" aria-hidden="true"></span></td> 
+	  							<td><span class="glyphicon glyphicon-remove" id="del_{{w.id}}" ng-click="delete(w.id)" aria-hidden="true"></span></td> 
 	  						</tr> 
 	  					</tbody> 
 	  				</table>
