@@ -70,26 +70,11 @@
 	  						</tr> 
 	  					</tbody> 
 	  				</table>
-	  				<nav>
-					  <ul class="pagination">
-					    <li>
-					      <a href="#" aria-label="Previous">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-					    <?php for($i = 1; $i < 10; $i++){ 
-					    	echo "<li ><a href='#' ng-click='page($i)'>$i</a></li>";
-					    } ?>
-					    <li>
-					      <a href="#" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
-    				</div>
-	  			</div>
-  			</div>
+	  				<div id="div_pagination">
+	  					<?php pagination($_COOKIE['xUt']); ?>
+	  				</div>
+    			</div>
+	  		</div>
   		</div>
 	</div>
 	<span>

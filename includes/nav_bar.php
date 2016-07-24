@@ -14,7 +14,7 @@
             <div class="form-group">
               <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input type="text" class="form-control" placeholder="Search word" ng-model="searchWord">
+                <input type="text" class="form-control" placeholder="Search word" ng-change="changeSearch()" ng-model="searchWord">
               </div>      
             </div>
       </form>

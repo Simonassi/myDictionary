@@ -1,9 +1,11 @@
 <?php require_once("../includes/init.php"); ?>
 <?php confirm_logged_in(); ?>
 <?php 
+$data = json_decode(file_get_contents("php://input"));
 
-$page = isset($_GET['page']) ? $_GET['page'] : 1;
-$words_set = readAllWords($_SESSION["dictionary_id"],$_SESSION["user_id"], $page);
+$token = $data->token;
+
+$words_set = readAllWords($_SESSION["dictionary_id"], $_SESSION["user_id"], $token);
 
 $data="";
 

@@ -3,10 +3,16 @@
 <?php
 $data = json_decode(file_get_contents("php://input"));
 
-$id = deleteWord($data->word_id, $_SESSION['dictionary_id']);
+$dictionary_id = $_SESSION['dictionary_id'];
+$language_id   = $data->language_id;
+$text          = $data->text;
+$description   = $data->description;
+$token         = $data->token;
+
+$id = saveWord($dictionary_id, $language_id, $text, $description, $token);
 
 if($id > 0){
-	$arr = array( 'msg' => 'Word deleted!', 'error' => '');
+	$arr = array('text' => $text, 'description' => $description, 'msg' => 'Word saved!', 'error' => '');
 }else{
 	$arr = array( 'msg' => '', 'error' => 'An error occurred. Please try to reload and try again later. Sorry for the inconvenience.');
 }

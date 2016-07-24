@@ -28,18 +28,14 @@
         return html_entity_decode(utf8_decode($str));
     }
 
-    function readAllWords($dictionary_id, $user_id, $page){
+    function readAllWords($dictionary_id, $user_id, $token){
  
         global $connection;
         
-        if(!validateDictionary()){ return false; }
+        if(!validateDictionary($dictionary_id, $token)){ return false; }
 
         $dictionary_id = (int) $dictionary_id;
         $user_id       = (int) $user_id;
-        $page          = (int) $page;
-
-        $row_count = 10;
-        $offset = ($page - 1)*$row_count;
 
         $query  = "SELECT w.id, w.text, w.description, l.language ";
         $query .= "FROM words w ";
@@ -48,19 +44,22 @@
         $query .= "WHERE d.id = {$dictionary_id} ";
         $query .= "AND d.user_id = {$user_id} ";
         $query .= "ORDER BY w.text ASC ";
-        //$query .= "LIMIT {$offset}, {$row_count}";
         
         $words_set = mysqli_query($connection, $query);
         confirm_query($words_set);
         
         return $words_set;
     }
-	
-    function validateDictionary(){
+
+    function getNumberofWords($dictionary_id, $user_id, $token){
+        return mysqli_num_rows(readAllWords($dictionary_id, $user_id, $token));
+    }
+
+    function validateDictionary($dictionary_id, $token){
         global $connection;
 
-        $dictionary_id = (int) $_SESSION['dictionary_id'];
-        $token         = mysql_prep($_COOKIE['xUt']);
+        $dictionary_id = (int) $dictionary_id;
+        $token         = mysql_prep($token);
 
         $query  = "SELECT * ";
         $query .= "FROM users u ";
@@ -73,10 +72,11 @@
         return mysqli_num_rows($result);
     }
 
-    function saveWord($dictionary_id, $language_id, $text, $description){
+
+    function saveWord($dictionary_id, $language_id, $text, $description, $token){
         global $connection;
 		
-        if(!validateDictionary()){ return false; }
+        if(!validateDictionary($dictionary_id, $token)){ return false; }
 
         $dictionary_id = (int) $dictionary_id;
         $language_id   = (int) $language_id;
@@ -94,10 +94,10 @@
         return $id;
     }
 
-    function deleteWord($word_id, $dictionary_id){
+    function deleteWord($word_id, $dictionary_id, $token){
         global $connection;
         
-        if(!validateDictionary()){ return false; }
+        if(!validateDictionary($dictionary_id, $token)){ return false; }
 
         $word_id       = (int) $word_id;
         $dictionary_id = (int) $dictionary_id;
@@ -254,27 +254,43 @@
         return bin2hex(openssl_random_pseudo_bytes($length));
     }
 
-    /*
-    function getToken($user_id, $username){
-        global $connection;
-        
-        $user_id = (int) $user_id;
-        $safe_username = mysqli_real_escape_string($connection, $username);
-        
-        $query  = "SELECT token ";
-        $query .= "FROM users ";
-        $query .= "WHERE id = {$user_id} ";
-        $query .= "AND email = '{$safe_username}' ";
-        $query .= "LIMIT 1";
-        
-        $user = mysqli_query($connection, $query);
-        confirm_query($user);
-        
-        if($user = mysqli_fetch_assoc($user)){
-            return $user["token"];
+    function pagination($token){
+
+        $pagination = "<nav>
+                            <ul class='pagination'>
+                                <li>
+                                    <a href='#'' aria-label='Previous'>
+                                        <span aria-hidden='true'>&laquo;</span>
+                                    </a>
+                                </li>";
+
+        // CHANGE 10 FOR THE NUMBER OF ELEMENTS PER PAGES IN THE FUTURE
+        $n = getNumberofWords($_SESSION["dictionary_id"], $_SESSION["user_id"], $token) / 10; 
+
+        if( $n > ceil($n) ){
+            $n = ceil($n) + 1;
         }else{
-            return null;   
+            $n = ceil($n);
         }
+
+        for($i = 1; $i <= $n; $i++){
+            if($i == 1){
+                $class = 'class="active"';
+            }else{
+                $class = '';
+            }
+            $pagination .= "<li {$class} id='li_$i'><a href='#' ng-click='page($i)'>$i</a></li>";
+        }
+
+        $pagination .= "
+                        <li>
+                            <a href='#' aria-label='Next'>
+                                <span aria-hidden='true'>&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>";
+
+        echo $pagination;
     }
-    */
 ?>
