@@ -58,6 +58,8 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
                 $scope.text = '';
                 $scope.description = '';
                 $('#input_new_word').focus();
+                $('#del_').attr('id', 'del_'+data.id);
+                $('#edit_').attr('id', 'edit_'+data.id);
                 //updatePagination($scope.token);
             }else{
                 $scope.errors.push(data.error);

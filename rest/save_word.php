@@ -12,7 +12,7 @@ $token         = $data->token;
 $id = saveWord($dictionary_id, $language_id, $text, $description, $token);
 
 if($id > 0){
-	$arr = array('text' => $text, 'description' => $description, 'msg' => 'Word saved!', 'error' => '');
+	$arr = array('text' => $text, 'description' => $description, 'msg' => 'Word saved!', 'error' => '', 'id' => $id);
 }else{
 	$arr = array( 'msg' => '', 'error' => 'An error occurred. Please try to reload and try again later. Sorry for the inconvenience.');
 }
