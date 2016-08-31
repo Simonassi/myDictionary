@@ -36,11 +36,25 @@
   		<br>
   		<div class="row">
   			<div class="col-md-12">
+  				
   				<div class="alert alert-danger" role="alert" ng-repeat="error in errors">
+  					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  						<span aria-hidden="true">&times;</span>
+  					</button>
   					<span class='glyphicon glyphicon-exclamation-sign' aria-hidden='true'></span>
   					<span class='sr-only'>Error:</span>
   					{{ error }}
   				</div>
+
+  				<div class="alert alert-warning" role="alert" ng-repeat="warning in warnings">
+  					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+  						<span aria-hidden="true">&times;</span>
+  					</button>
+  					<span class='glyphicon glyphicon-warning-sign' aria-hidden='true'></span>
+  					<span class='sr-only'>Warning:</span>
+  					{{ warning }}
+  				</div>
+
   				<div class="panel panel-default">
   					
 	  				<table class="table"> 
@@ -56,7 +70,7 @@
 	  								<span ng-show="sortType == 'description' && !sortReverse" class="fa fa-caret-down"></span>
         							<span ng-show="sortType == 'description' && sortReverse"  class="fa fa-caret-up"></span>
 	  							</th> 
-	  							<th></th>
+	  							<!--<th></th>-->
 	  							<th></th>
 	  						</tr> 
 	  					</thead> 
@@ -65,7 +79,7 @@
 	  						<tr ng-repeat="w in words | orderBy:sortType:sortReverse | filter:searchWord |  limitTo: limitSize : limitBegin">
 	  							<td>{{w.text}}</td> 
 	  							<td>{{w.description}}</td>
-	  							<td><span class="glyphicon glyphicon-pencil" id="edit_{{w.id}}" aria-hidden="true"></span></td> 
+	  							<!--<td><span class="glyphicon glyphicon-pencil" id="edit_{{w.id}}" aria-hidden="true"></span></td>-->
 	  							<td><span class="glyphicon glyphicon-remove" id="del_{{w.id}}" ng-click="delete(w.id)" aria-hidden="true"></span></td> 
 	  						</tr> 
 	  					</tbody> 
@@ -99,5 +113,15 @@ $('.input_word').keypress(function (e) {
 	if (e.which == 13) {
 		angular.element(document.getElementById('wordsControler')).scope().save();
 	}
+});
+
+$(document).keypress(function (e) {
+	
+    if (e.which == 43) {
+        document.getElementById('input_new_word').value = '';
+        document.getElementById('input_new_description').value = '';
+        document.getElementById('search_word').value = '';
+        document.getElementById('search_word').focus();
+    }
 });
 </script>

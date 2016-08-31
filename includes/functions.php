@@ -219,6 +219,24 @@
         }
     }
 
+    function wordExists($dictionary_id, $language_id, $text){
+         global $connection;
+
+        $dictionary_id = (int) $dictionary_id;
+        $language_id   = (int) $language_id;
+        $text          = mysql_prep($text);
+
+        $query  = "SELECT * ";
+        $query .= "FROM words w ";
+        $query .= "WHERE w.dictionary_id = '{$dictionary_id}' ";
+        $query .= "AND w.language_id = '{$language_id}' ";
+        $query .= "AND w.text = '{$text}' ";
+
+        $result = mysqli_query($connection, $query);
+
+        return mysqli_num_rows($result);
+    }
+
     function password_check($password, $existing_hash) {
         $hash = crypt($password, $existing_hash);
         if ($hash === $existing_hash) {
@@ -292,5 +310,27 @@
                 </nav>";
 
         echo $pagination;
+    }
+
+    function get_dictionary(){
+        global $connection;
+        
+        $user_id = (int) $_SESSION['user_id'];
+
+        $query  = "SELECT * ";
+        $query .= "FROM dictionary ";
+        $query .= "WHERE ";
+        $query .= "user_id = '{$user_id}' ";
+        $query .= "AND actived = 1 ";
+        $query .= "AND default_dictionary = 1 ";
+        $query .= "LIMIT 1";
+
+        $dictionary_set = mysqli_query($connection, $query);
+        confirm_query($dictionary_set);
+        if($dictionary = mysqli_fetch_assoc($dictionary_set)) {
+            return $dictionary['id'];
+        } else {
+            return null;
+        }
     }
 ?>

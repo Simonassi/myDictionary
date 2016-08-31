@@ -9,12 +9,17 @@ $text          = $data->text;
 $description   = $data->description;
 $token         = $data->token;
 
-$id = saveWord($dictionary_id, $language_id, $text, $description, $token);
+if(!wordExists($dictionary_id, $language_id, $text)){	
 
-if($id > 0){
-	$arr = array('text' => $text, 'description' => $description, 'msg' => 'Word saved!', 'error' => '', 'id' => $id);
+	$id = saveWord($dictionary_id, $language_id, $text, $description, $token);
+
+	if($id > 0){
+		$arr = array('text' => $text, 'description' => $description, 'msg' => 'Word saved!', 'error' => '', 'id' => $id);
+	}else{
+		$arr = array( 'msg' => '', 'error' => 'An error occurred. Please try to reload and try again later. Sorry for the inconvenience.');
+	}
 }else{
-	$arr = array( 'msg' => '', 'error' => 'An error occurred. Please try to reload and try again later. Sorry for the inconvenience.');
+	$arr = array( 'msg' => '', 'warning' => 'Word already registred!');
 }
 $jsn = json_encode($arr);
 print_r($jsn);

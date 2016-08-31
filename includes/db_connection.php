@@ -1,17 +1,16 @@
 <?php
-    
+  
 	define("DB_SERVER", "localhost");
 	define("DB_USER", "root");
 	define("DB_PASS", "");
 	define("DB_NAME", "my_dictionary");
-    
-    
-    /*
-    define("DB_SERVER", "mysql.hostinger.com.br");
-	define("DB_USER", "u634392222_rsa");
-	define("DB_PASS", "15263897");
-	define("DB_NAME", "u634392222_sql");
-    */
+  
+  /*
+  define("DB_SERVER", "sql8.freemysqlhosting.net");
+	define("DB_USER", "sql8131377");
+	define("DB_PASS", "1muFAizZQz");
+	define("DB_NAME", "sql8131377");
+  */
     
   // 1. Create a database connection
   $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);

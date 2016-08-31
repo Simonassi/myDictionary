@@ -36,7 +36,9 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
     }
 
 	$scope.save = function() {
-		$scope.errors = [];
+		$scope.errors   = [];
+        $scope.warnings = [];
+
 		error = false;
 
 		if($scope.text == '' || $scope.text == null){
@@ -59,14 +61,26 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
                 $scope.description = '';
                 $('#input_new_word').focus();
                 $('#del_').attr('id', 'del_'+data.id);
-                $('#edit_').attr('id', 'edit_'+data.id);
+                // $('#edit_').attr('id', 'edit_'+data.id);
                 //updatePagination($scope.token);
             }else{
-                $scope.errors.push(data.error);
+                if(data.warning != ''){
+                    $scope.warnings.push(data.warning);
+                    $scope.searchWord = $scope.text;
+                }else{
+                    $scope.errors.push(data.error);    
+                }
+                
             }
         }).error(function(data, status) {
             $scope.errors.push(status);
         });
+    }
+
+    $scope.clearAll = function(){
+        $scope.text = '';
+        $scope.description = '';
+        $scope.searchWord = '';
     }
 
     $scope.removeWord = function(word_id){
@@ -103,7 +117,9 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         $('#li_'+page_number).addClass('active');
     	$scope.limitBegin = (page_number-1)*$scope.limitSize;
     }
+
 }]);
+
 /*
 function updatePagination(token){
 
