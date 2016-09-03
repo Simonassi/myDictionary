@@ -276,7 +276,7 @@
 
         $pagination = "<nav>
                             <ul class='pagination'>
-                                <li>
+                                <li ng-click='previous_page()'>
                                     <a href='#'' aria-label='Previous'>
                                         <span aria-hidden='true'>&laquo;</span>
                                     </a>
@@ -297,12 +297,19 @@
             }else{
                 $class = '';
             }
-            $pagination .= "<li {$class} id='li_$i'><a href='#' ng-click='page($i)'>$i</a></li>";
+
+            if($i > 10){
+                $style = 'style = "display: none;"';
+            }else{
+                $style = '';
+            }
+
+            $pagination .= "<li {$style} {$class} id='li_$i'><a href='#' ng-click='page($i)'>$i</a></li>";
         }
 
         $pagination .= "
                         <li>
-                            <a href='#' aria-label='Next'>
+                            <a href='#' aria-label='Next' ng-click='next_page()'>
                                 <span aria-hidden='true'>&raquo;</span>
                             </a>
                         </li>

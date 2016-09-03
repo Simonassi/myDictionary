@@ -9,9 +9,10 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
     
     $scope.token = getCookie("xUt");
   	
-    $scope.limitSize  = 10;
-  	$scope.limitBegin =  0;
+    $scope.limitSize   = 10;
+  	$scope.limitBegin  =  0;
     $scope.searchFirst = true;
+    $scope.currentPage = 1;
 
 	$http.post('../rest/read_words.php', {'token': $scope.token} ).success(function(data) {
         $scope.words = data.records;
@@ -116,6 +117,53 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         $('ul.pagination li.active').removeClass('active');
         $('#li_'+page_number).addClass('active');
     	$scope.limitBegin = (page_number-1)*$scope.limitSize;
+        $scope.currentPage = page_number;
+
+        // show only 10 pages at time
+        var number_of_pages = 10;
+        var pages_before = (number_of_pages / 2) -1; // 4
+        var pages_after  = ( number_of_pages / 2 );  // 5
+
+        var min_page = page_number - pages_before;
+        var max_page = page_number + pages_after;
+
+        var min_fix = 0;
+        var max_fix = 0;
+
+        var lastPage  =  $('.pagination li').eq(-2).attr('id').substr(3);
+        var firstPage = 1; 
+
+        if(min_page < firstPage){
+            min_fix  = min_page - min_page - min_page + 1; // convert to positive and add one (because the index 0)
+            min_page = firstPage;
+        }
+
+        if(max_page > lastPage){
+            max_fix = max_page - lastPage;
+            max_page = lastPage;
+        }
+
+        for(i = firstPage; i <= lastPage; i++ ){
+            var element = $('#li_'+i);
+
+            if( (i >= (min_page-max_fix) ) && ( i <= (max_page + min_fix) ) ){
+                element.show();
+            }else{
+                element.hide();
+            }
+        }
+    }
+
+    $scope.next_page = function(){
+        if($scope.currentPage != $('.pagination li').eq(-2).attr('id').substr(3) ){
+            $scope.page(++$scope.currentPage);
+        }
+    }
+
+    $scope.previous_page = function(){
+        if($scope.currentPage > 1 ){
+            $scope.page(--$scope.currentPage);
+        }
     }
 
 }]);
