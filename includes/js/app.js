@@ -29,10 +29,12 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         if($scope.searchWord.length > 0){
             $scope.limitBegin = 0;
             $scope.limitSize  = $scope.words.length;
+            $('.pagination').hide();
         }else{
             $scope.limitBegin  = $scope.old_limitBegin;
             $scope.limitSize   = $scope.old_limitSize;
             $scope.searchFirst = true;
+            $('.pagination').show();
         }
     }
 
@@ -134,7 +136,7 @@ app.controller('wordsControler', ['$scope', '$http', function ($scope, $http){
         var firstPage = 1; 
 
         if(min_page < firstPage){
-            min_fix  = min_page - min_page - min_page + 1; // convert to positive and add one (because the index 0)
+            min_fix  = min_page - (min_page*2) + 1; // convert to positive and add one (because the index 0)
             min_page = firstPage;
         }
 
